@@ -10,7 +10,7 @@ public class conn {
 
 	public String ConnectionTest()
 	{
-		String driver = "com.mysql.jdbc.Driver";
+		String driver = "com.mysql.cj.jdbc.Driver";
 
 		String database = "intplan";
 
