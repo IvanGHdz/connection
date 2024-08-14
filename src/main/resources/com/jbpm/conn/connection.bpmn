@@ -15,18 +15,59 @@
   <process processType="Private" isExecutable="true" id="conn.connection" name="connection" tns:packageName="com.jbpm.conn" tns:version="1.0" >
 
     <extensionElements>
-     <tns:import name="com.jbpm.conn.conn" />
+     <tns:import name="java.sql.Connection" />
+     <tns:import name="java.sql.DriverManager" />
+     <tns:import name="java.sql.ResultSet" />
+     <tns:import name="java.sql.SQLException" />
+     <tns:import name="java.sql.Statement" />
     </extensionElements>
     <!-- nodes -->
     <scriptTask id="_B86550E9-1FC9-4932-A73F-87EB1D1829E7" name="Task" scriptFormat="http://www.java.com/java" >
-      <script>System.out.println("tarea de conexion de Ivan");
+      <script>
+		String driver = "com.mysql.cj.jdbc.Driver";
 
-conn conn = new conn();
+		String database = "intplan";
 
-String consulta = conn.ConnectionTest();
+		String hostname = "localhost";
 
-System.out.println(consulta);
-		</script>
+		String port = "33060";
+
+		String url = "jdbc:mysql://" + hostname + ":" + port + "/" + database + "?allowPublicKeyRetrieval=true&amp;useSSL=false";
+
+		String username = "root";
+
+		String password = "pw123";
+
+		System.out.println(url);
+		
+		Connection conn = null;
+
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, username, password);
+		
+			System.out.println("try");
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println(e.toString());
+
+		}
+
+		String consulta = "SELECT * FROM casos";
+
+		try {
+			Statement sentencia = conn.createStatement();
+			ResultSet resultado = sentencia.executeQuery(consulta);
+			while (resultado.next()) {
+				System.out.println(resultado.getString(1));
+				
+				
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+</script>
     </scriptTask>
     <startEvent id="_F5BFFA86-E1D0-4E9D-ACA7-D556B8F855C8"  isInterrupting="true"/>
     <endEvent id="_C7DE99BF-FA13-4ADC-BCA5-A5B6910F80AD" />
